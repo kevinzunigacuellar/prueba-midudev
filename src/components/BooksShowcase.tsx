@@ -22,7 +22,7 @@ export function BookShowcase() {
           <For each={store.showcaseBooks}>
             {(book) => (
               <li class="relative rounded-md overflow-hidden">
-                <img src={book.cover} alt={book.title} class="h-full w-auto" />
+                <img src={book.cover} alt={book.title} class="h-full w-auto" loading="lazy" decoding="async" />
                 <div class="absolute inset-0 hover:bg-white/40 hover:backdrop-blur transition-opacity flex justify-center items-center flex-col p-2 text-center opacity-0 hover:opacity-100">
                   <h2 class="font-bold">{book.title}</h2>
                   <button
