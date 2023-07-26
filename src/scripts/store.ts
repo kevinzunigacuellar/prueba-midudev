@@ -24,6 +24,7 @@ interface Store {
   filters: {
     genre: string;
     pages: number;
+    search: string;
   };
 }
 
@@ -46,6 +47,7 @@ export const [store, setStore] = createStore<Store>(
         filters: {
           genre: "todos",
           pages: getMaxPages(),
+          search: "",
         },
       },
 );
@@ -100,13 +102,15 @@ export function filterByPages(pages: number) {
 }
 
 createEffect(() => {
-  const { pages, genre } = store.filters;
+  const { pages, genre, search } = store.filters;
   const readingListIsbn = store.readingList.map((book) => book.ISBN);
   const filterbooks = initialBooks.filter(
     (book) =>
       book.pages <= pages &&
       (genre === "todos" || book.genre === genre) &&
-      !readingListIsbn.includes(book.ISBN),
+      !readingListIsbn.includes(book.ISBN) &&
+      (book.title.toLowerCase().includes(search.toLowerCase()) ||
+        book.author.name.toLowerCase().includes(search.toLowerCase())),
   );
   setStore("showcaseBooks", filterbooks);
 });
@@ -135,4 +139,8 @@ export function DecreaeIdxReadingList(idx: number) {
       readingList.splice(idx + 1, 0, book);
     }),
   );
+}
+
+export function filterBySearch(search: string) {
+  setStore("filters", "search", search);
 }

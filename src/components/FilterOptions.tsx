@@ -6,6 +6,7 @@ import {
   getAllGenres,
   filterByGenre,
   filterByPages,
+  filterBySearch,
 } from "../scripts/store";
 
 export function FilterOptions() {
@@ -42,7 +43,7 @@ export function FilterOptions() {
       </label>
       <select
         id="genre"
-        class="rounded-lg bg-zinc-800 border border-zinc-600 text-zinc-300 mt-1 py-1"
+        class="rounded-lg bg-zinc-800 border border-zinc-600 text-zinc-300 my-1 py-1"
         onInput={(e) => {
           const genre = e.currentTarget.value;
           filterByGenre(genre);
@@ -57,6 +58,23 @@ export function FilterOptions() {
           )}
         </For>
       </select>
+      <label
+        for="search"
+        class="uppercase font-bold tracking-wide text-sm text-zinc-300"
+      >
+        Buscar
+      </label>
+      <input
+        id="search"
+        value={store.filters.search}
+        type="text"
+        class="rounded-lg bg-zinc-800 border border-zinc-600 text-zinc-300 mt-1 py-1"
+        placeholder="Busca un libro"
+        onInput={(e) => {
+          const search = e.currentTarget.value;
+          filterBySearch(search);
+        }}
+      />
     </form>
   );
 }
