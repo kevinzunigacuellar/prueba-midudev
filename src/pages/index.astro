@@ -1,7 +1,7 @@
 ---
 import { BookShowcase } from "../components/BooksShowcase";
 import { FilterOptions } from "../components/FilterOptions";
-import { ReadingList } from "../components/ReadingList";
+// import { ReadingList } from "../components/ReadingList";
 ---
 
 <html lang="en" class="w-full h-full">
@@ -12,15 +12,18 @@ import { ReadingList } from "../components/ReadingList";
     <meta name="generator" content={Astro.generator} />
     <title>Prueba midudev</title>
   </head>
-  <body class="w-full h-full bg-zinc-900 px-6">
+  <body class="w-full h-full bg-white px-6">
     <main class="max-w-screen-xl mx-auto">
-      <h1 class="text-white text-5xl font-bold py-10">Books</h1>
-      <section class="flex gap-8 items-start">
-        <div class="grid grid-cols-1 gap-5 w-64">
+      <h1 class="text-zinc-900 font-serif text-5xl font-bold py-10">
+        Biblioteca
+      </h1>
+      <section class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="md:col-span-1">
           <FilterOptions client:only="solid" />
-          <ReadingList client:only="solid" />
         </div>
-        <BookShowcase client:only="solid" />
+        <div class="md:col-span-3">
+          <BookShowcase client:only="solid" />
+        </div>
       </section>
     </main>
   </body>

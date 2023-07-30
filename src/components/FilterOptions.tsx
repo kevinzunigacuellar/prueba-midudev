@@ -11,14 +11,14 @@ import {
 
 export function FilterOptions() {
   return (
-    <form class="bg-zinc-800 p-4 rounded-lg border border-zinc-700 flex flex-col gap-2">
+    <form class="bg-blue-100 p-4 border border-blue-400 rounded-lg grid grid-cols-1">
       <label
         for="pages"
-        class="uppercase font-bold tracking-wide text-sm text-zinc-300"
+        class="uppercase font-bold tracking-wide text-xs text-blue-800 mb-1"
       >
         páginas
       </label>
-      <div class="flex gap-2 items-center">
+      <div class="flex gap-2 items-center mb-2">
         <input
           id="pages"
           type="range"
@@ -31,19 +31,23 @@ export function FilterOptions() {
             filterByPages(pages);
           }}
         />
-        <span class="font-mono flex-shrink-0 w-12 text-sm text-center bg-zinc-700 text-zinc-300 p-1 rounded-md">
-          {store.filters.pages}
-        </span>
+        <input class="font-bold flex-shrink-0 w-12 text-sm text-center bg-white border border-blue-400 text-blue-800 p-1 rounded-md"
+        value={store.filters.pages} onChange={(e)=>{
+          const pages = parseInt(e.currentTarget.value);
+          if (pages < getMinPages() || pages > getMaxPages()) return;
+          filterByPages(pages);
+        }}>
+        </input>
       </div>
       <label
         for="genre"
-        class="uppercase font-bold tracking-wide text-sm text-zinc-300"
+        class="uppercase font-bold tracking-wide text-xs text-blue-800 mb-2"
       >
         género
       </label>
       <select
         id="genre"
-        class="rounded-lg bg-zinc-800 border border-zinc-600 text-zinc-300 my-1 py-1"
+        class="rounded-lg bg-white border-0 text-zinc-500 mb-4 py-1"
         onInput={(e) => {
           const genre = e.currentTarget.value;
           filterByGenre(genre);
@@ -60,7 +64,7 @@ export function FilterOptions() {
       </select>
       <label
         for="search"
-        class="uppercase font-bold tracking-wide text-sm text-zinc-300"
+        class="uppercase font-bold tracking-wide text-xs text-blue-800 mb-2"
       >
         Buscar
       </label>
@@ -68,7 +72,7 @@ export function FilterOptions() {
         id="search"
         value={store.filters.search}
         type="text"
-        class="rounded-lg bg-zinc-800 border border-zinc-600 text-zinc-300 mt-1 py-1"
+        class="rounded-lg bg-white border-0 text-zinc-500 mb-1 py-1"
         placeholder="Busca un libro"
         onInput={(e) => {
           const search = e.currentTarget.value;
