@@ -22,9 +22,9 @@ export function FavoriteButton({ isbn }: { isbn: Book["ISBN"] }) {
     >
       <Show
         when={store.readingList.some((bookInList) => bookInList.ISBN === isbn)}
-        fallback={"Agregar a la lista de lectura 💜"}
+        fallback={"Agregar a la lista de lectura"}
       >
-        Quitar de la lista de lectura ❌
+        Quitar de la lista de lectura
       </Show>
     </button>
   );
