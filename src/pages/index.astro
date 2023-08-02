@@ -1,30 +1,16 @@
 ---
 import { BookShowcase } from "../components/BooksShowcase";
 import { FilterOptions } from "../components/FilterOptions";
-// import { ReadingList } from "../components/ReadingList";
+import Layout from "../layouts/Layout.astro";
 ---
 
-<html lang="en" class="w-full h-full">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Prueba midudev</title>
-  </head>
-  <body class="w-full h-full bg-white px-6">
-    <main class="max-w-screen-xl mx-auto">
-      <h1 class="text-zinc-900 font-serif text-5xl font-bold pt-14 pb-10">
-        Biblioteca
-      </h1>
-      <section class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div class="md:col-span-1">
-          <FilterOptions client:only="solid" />
-        </div>
-        <div class="md:col-span-3">
-          <BookShowcase client:only="solid" />
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+<Layout title="Biblioteca">
+  <section class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="md:col-span-1">
+      <FilterOptions client:only="solid" />
+    </div>
+    <div class="md:col-span-3">
+      <BookShowcase client:only="solid" />
+    </div>
+  </section>
+</Layout>

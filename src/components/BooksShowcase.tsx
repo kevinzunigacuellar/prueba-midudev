@@ -21,9 +21,9 @@ export function BookShowcase() {
                 />
                 <div class="pt-3 flex gap-2 justify-between items-center">
                   <p class="text-sm">
-                    <span class="block text-zinc-900 font-semibold">
+                    <a href={`/book/${book.ISBN}/`} class="block text-zinc-900 font-semibold">
                       {book.title}
-                    </span>
+                    </a>
                     <span class="block text-zinc-500">
                       {book.author.name} &middot; {book.year}
                     </span>
