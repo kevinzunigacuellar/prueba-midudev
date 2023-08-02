@@ -23,7 +23,7 @@ export function BookShowcase() {
                   <p class="text-sm">
                     <a
                       href={`/book/${book.ISBN}/`}
-                      class="block text-zinc-900 font-semibold"
+                      class="inline-block text-zinc-900 font-semibold underline hover:text-blue-600"
                     >
                       {book.title}
                     </a>
@@ -32,8 +32,8 @@ export function BookShowcase() {
                     </span>
                   </p>
                   <button
-                    class="p-1 bg-red-100 rounded-md border border-red-300 text-red-500 hover:border-red-400 hover:text-red-600 transition-all"
-                    onclick={() => addToReadingList(book)}
+                    class="p-1 bg-red-100 rounded-md border border-red-300 text-red-500 hover:border-red-400 hover:text-red-600 transition-colors"
+                    onclick={() => addToReadingList(book.ISBN)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

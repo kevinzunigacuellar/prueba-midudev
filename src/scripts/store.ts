@@ -1,33 +1,7 @@
 import { createStore, produce } from "solid-js/store";
 import booksJson from "../data/books.json";
 import { createEffect } from "solid-js";
-
-interface Author {
-  name: string;
-  otherBooks: string[];
-}
-
-interface Book {
-  title: string;
-  pages: number;
-  genre: string;
-  cover: string;
-  synopsis: string;
-  year: number;
-  ISBN: string;
-  author: Author;
-}
-
-interface Store {
-  showcaseBooks: Book[];
-  readingList: Book[];
-  filters: {
-    genre: string;
-    pages: number;
-    search: string;
-    sortByYear: "asc" | "desc";
-  };
-}
+import type { Book, Store } from "./types";
 
 const initialBooks = booksJson.library.map((bookData) => {
   return {
@@ -99,7 +73,12 @@ createEffect(() => {
   setStore("showcaseBooks", orderedBooks);
 });
 
-export function addToReadingList(book: Book) {
+const ISBNLookUp = new Map<string, Book>(
+  initialBooks.map((book) => [book.ISBN, book]),
+);
+
+export function addToReadingList(isbn: Book["ISBN"]) {
+  const book = ISBNLookUp.get(isbn)!;
   setStore(
     "readingList",
     produce((readingList) => {
@@ -108,7 +87,7 @@ export function addToReadingList(book: Book) {
   );
 }
 
-export function removeFromReadingList(isbn: string) {
+export function removeFromReadingList(isbn: Book["ISBN"]) {
   const filteredReadingList = store.readingList.filter(
     (book) => book.ISBN !== isbn,
   );
@@ -127,11 +106,11 @@ export function getAllGenres() {
   return Array.from(new Set(initialBooks.map((book) => book.genre)));
 }
 
-export function filterByGenre(genre: string) {
+export function filterByGenre(genre: Book["genre"]) {
   setStore("filters", "genre", genre);
 }
 
-export function filterByPages(pages: number) {
+export function filterByPages(pages: Book["pages"]) {
   setStore("filters", "pages", pages);
 }
 
