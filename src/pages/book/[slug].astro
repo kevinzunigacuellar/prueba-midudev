@@ -1,0 +1,29 @@
+---
+import data from "../../data/books.json";
+import Layout from "../../layouts/Layout.astro";
+import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
+
+export function getStaticPaths() {
+  return data.library.map((b) => {
+    return {
+      params: {
+        slug: b.book.ISBN,
+      },
+      props: {
+        book: b.book,
+      },
+    };
+  });
+}
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { slug } = Astro.params as Params;
+const { book } = Astro.props as Props;
+---
+
+<Layout title={book.title}>
+  <h1>{book.title}</h1>
+  <p>{slug}</p>
+</Layout>
