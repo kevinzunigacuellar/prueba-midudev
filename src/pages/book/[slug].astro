@@ -1,0 +1,62 @@
+---
+import data from "../../data/books.json";
+import Layout from "../../layouts/Layout.astro";
+import type { InferGetStaticPropsType } from "astro";
+import { FavoriteButton } from "../../components/FavoriteButton";
+
+export function getStaticPaths() {
+  return data.library.map((b) => {
+    return {
+      params: {
+        slug: b.book.ISBN,
+      },
+      props: {
+        book: b.book,
+      },
+    };
+  });
+}
+
+// type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { book } = Astro.props as Props;
+---
+
+<Layout title={book.title}>
+  <section class="sm:flex sm:gap-12 pb-6">
+    <img src={book.cover} class="rounded-lg w-full sm:w-auto" />
+    <div class="max-w-prose text-zinc-600">
+      <h2 class="font-bold text-3xl text-zinc-900 mt-4 sm:mt-0">
+        {book.title}
+      </h2>
+      <p class="mt-1">{book.author.name} &middot; {book.year}</p>
+      <p class="mt-3">{book.synopsis}</p>
+      <h3 class="font-semibold text-zinc-800 mt-6">Detalles del libro</h3>
+      <ul class="mt-1 list-disc list-inside">
+        <li>
+          <span class="font-semibold text-zinc-800">ISBN-13:&nbsp;</span>{
+            book.ISBN
+          }
+        </li>
+        <li>
+          <span class="font-semibold text-zinc-800">Género:&nbsp;</span>{
+            book.genre
+          }
+        </li>
+        <li>
+          <span class="font-semibold text-zinc-800">Páginas:&nbsp;</span>{
+            book.pages
+          }
+        </li>
+      </ul>
+      <h3 class="font-semibold text-zinc-800 mt-6">
+        Otros libros escritos por el autor
+      </h3>
+      <ul class="mt-1 list-disc list-inside">
+        {book.author.otherBooks.map((book) => <li>{book}</li>)}
+      </ul>
+      <FavoriteButton isbn={book.ISBN} client:only="solid" />
+    </div>
+  </section>
+</Layout>

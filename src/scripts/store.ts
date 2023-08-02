@@ -1,32 +1,7 @@
 import { createStore, produce } from "solid-js/store";
 import booksJson from "../data/books.json";
 import { createEffect } from "solid-js";
-
-interface Author {
-  name: string;
-  otherBooks: string[];
-}
-
-interface Book {
-  title: string;
-  pages: number;
-  genre: string;
-  cover: string;
-  synopsis: string;
-  year: number;
-  ISBN: string;
-  author: Author;
-}
-
-interface Store {
-  showcaseBooks: Book[];
-  readingList: Book[];
-  filters: {
-    genre: string;
-    pages: number;
-    search: string;
-  };
-}
+import type { Book, Store } from "./types";
 
 const initialBooks = booksJson.library.map((bookData) => {
   return {
@@ -48,6 +23,7 @@ export const [store, setStore] = createStore<Store>(
           genre: "todos",
           pages: getMaxPages(),
           search: "",
+          sortByYear: "asc",
         },
       },
 );
@@ -56,6 +32,7 @@ function onStorageUpdate() {
   setStore(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)!));
 }
 
+// this effect updates the localStorage when the store changes
 createEffect(() => {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(store));
   window.addEventListener("storage", onStorageUpdate);
@@ -65,7 +42,43 @@ createEffect(() => {
   };
 });
 
-export function addToReadingList(book: Book) {
+// this effect updates the showcase when the filters change
+createEffect(() => {
+  const { pages, genre, search, sortByYear } = store.filters;
+  const readingListIsbn = store.readingList.map((book) => book.ISBN);
+  const filterbooks = initialBooks.filter((book) => {
+    const title = book.title.toLowerCase();
+    const author = book.author.name.toLowerCase();
+    const searchKeyword = search.toLowerCase();
+
+    // filter pages
+    if (book.pages > pages) return false;
+    // filter genre
+    if (genre !== "todos" && book.genre !== genre) return false;
+    // filter reading list
+    if (readingListIsbn.includes(book.ISBN)) return false;
+    // filter search
+    if (!title.includes(searchKeyword) && !author.includes(searchKeyword))
+      return false;
+
+    return true;
+  });
+
+  // sort by year
+  const orderedBooks = filterbooks.sort((a, b) => {
+    if (sortByYear === "asc") return a.year - b.year;
+    if (sortByYear === "desc") return b.year - a.year;
+    return 0;
+  });
+  setStore("showcaseBooks", orderedBooks);
+});
+
+const ISBNLookUp = new Map<string, Book>(
+  initialBooks.map((book) => [book.ISBN, book]),
+);
+
+export function addToReadingList(isbn: Book["ISBN"]) {
+  const book = ISBNLookUp.get(isbn)!;
   setStore(
     "readingList",
     produce((readingList) => {
@@ -74,7 +87,7 @@ export function addToReadingList(book: Book) {
   );
 }
 
-export function removeFromReadingList(isbn: string) {
+export function removeFromReadingList(isbn: Book["ISBN"]) {
   const filteredReadingList = store.readingList.filter(
     (book) => book.ISBN !== isbn,
   );
@@ -93,54 +106,22 @@ export function getAllGenres() {
   return Array.from(new Set(initialBooks.map((book) => book.genre)));
 }
 
-export function filterByGenre(genre: string) {
+export function filterByGenre(genre: Book["genre"]) {
   setStore("filters", "genre", genre);
 }
 
-export function filterByPages(pages: number) {
+export function filterByPages(pages: Book["pages"]) {
   setStore("filters", "pages", pages);
 }
-
-createEffect(() => {
-  const { pages, genre, search } = store.filters;
-  const readingListIsbn = store.readingList.map((book) => book.ISBN);
-  const filterbooks = initialBooks.filter(
-    (book) =>
-      book.pages <= pages &&
-      (genre === "todos" || book.genre === genre) &&
-      !readingListIsbn.includes(book.ISBN) &&
-      (book.title.toLowerCase().includes(search.toLowerCase()) ||
-        book.author.name.toLowerCase().includes(search.toLowerCase())),
-  );
-  setStore("showcaseBooks", filterbooks);
-});
 
 export function getRemainingBookCount() {
   return initialBooks.length - store.readingList.length;
 }
 
-export function IncreaseIdxReadingList(idx: number) {
-  setStore(
-    "readingList",
-    produce((readingList) => {
-      const book = readingList[idx]!;
-      readingList.splice(idx, 1);
-      readingList.splice(idx - 1, 0, book);
-    }),
-  );
-}
-
-export function DecreaeIdxReadingList(idx: number) {
-  setStore(
-    "readingList",
-    produce((readingList) => {
-      const book = readingList[idx]!;
-      readingList.splice(idx, 1);
-      readingList.splice(idx + 1, 0, book);
-    }),
-  );
-}
-
 export function filterBySearch(search: string) {
   setStore("filters", "search", search);
+}
+
+export function sortByYear(order: "asc" | "desc") {
+  setStore("filters", "sortByYear", order);
 }
