@@ -1,0 +1,9 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { ReadingList } from "../components/ReadingList";
+---
+
+<Layout title="Lista de lectura">
+  <h2 class="text-xl font-bold mb-4">Lista de lectura</h2>
+  <ReadingList client:only="solid" />
+</Layout>

@@ -2,12 +2,20 @@
 import { BookShowcase } from "../components/BooksShowcase";
 import { FilterOptions } from "../components/FilterOptions";
 import Layout from "../layouts/Layout.astro";
+import { ReadingListCounter } from "../components/ReadingListCounter";
 ---
 
 <Layout title="Biblioteca">
   <section class="grid grid-cols-1 md:grid-cols-4 gap-8">
     <div class="md:col-span-1">
       <FilterOptions client:only="solid" />
+      <a
+        class="border bg-violet-100 flex justify-between items-center mt-4 p-4 rounded-lg font-semibold border-violet-300 text-violet-700 hover:bg-violet-200 hover:border-violet-400 hover:text-violet-800"
+        href="/reading/"
+      >
+        <span>Ver lista de lectura</span>
+        <ReadingListCounter client:only="solid" />
+      </a>
     </div>
     <div class="md:col-span-3">
       <BookShowcase client:only="solid" />
