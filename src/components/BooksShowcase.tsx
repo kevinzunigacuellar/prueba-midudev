@@ -20,9 +20,13 @@ export function BookShowcase() {
                   decoding="async"
                 />
                 <div class="pt-3 flex gap-2 justify-between items-center">
-                  <p>
-                    <span class="block text-zinc-900">{book.title}</span>
-                    <span class="block text-zinc-500">{book.author.name}</span>
+                  <p class="text-sm">
+                    <span class="block text-zinc-900 font-semibold">
+                      {book.title}
+                    </span>
+                    <span class="block text-zinc-500">
+                      {book.author.name} &middot; {book.year}
+                    </span>
                   </p>
                   <button
                     class="p-1 bg-red-100 rounded-md border border-red-300 text-red-500 hover:border-red-400 hover:text-red-600 transition-all"

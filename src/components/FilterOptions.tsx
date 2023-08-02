@@ -7,6 +7,7 @@ import {
   filterByGenre,
   filterByPages,
   filterBySearch,
+  sortByYear,
 } from "../scripts/store";
 
 export function FilterOptions() {
@@ -31,13 +32,15 @@ export function FilterOptions() {
             filterByPages(pages);
           }}
         />
-        <input class="font-bold flex-shrink-0 w-12 text-sm text-center bg-white border border-blue-400 text-blue-800 p-1 rounded-md"
-        value={store.filters.pages} onChange={(e)=>{
-          const pages = parseInt(e.currentTarget.value);
-          if (pages < getMinPages() || pages > getMaxPages()) return;
-          filterByPages(pages);
-        }}>
-        </input>
+        <input
+          class="font-bold flex-shrink-0 w-12 text-sm text-center bg-white border border-blue-400 text-blue-800 p-1 rounded-md"
+          value={store.filters.pages}
+          onChange={(e) => {
+            const pages = parseInt(e.currentTarget.value);
+            if (pages < getMinPages() || pages > getMaxPages()) return;
+            filterByPages(pages);
+          }}
+        ></input>
       </div>
       <label
         for="genre"
@@ -72,13 +75,31 @@ export function FilterOptions() {
         id="search"
         value={store.filters.search}
         type="text"
-        class="rounded-lg bg-white border-0 text-zinc-500 mb-1 py-1"
+        class="rounded-lg bg-white border-0 text-zinc-500 mb-4 py-1"
         placeholder="Busca un libro"
         onInput={(e) => {
           const search = e.currentTarget.value;
           filterBySearch(search);
         }}
       />
+      <label
+        for="order"
+        class="uppercase font-bold tracking-wide text-xs text-blue-800 mb-2"
+      >
+        Ordenar por año
+      </label>
+      <select
+        id="order"
+        class="rounded-lg bg-white border-0 text-zinc-500 py-1 mb-1"
+        value={store.filters.sortByYear}
+        onInput={(e) => {
+          const order = e.currentTarget.value as "asc" | "desc";
+          sortByYear(order);
+        }}
+      >
+        <option value="asc">Ascendente</option>
+        <option value="desc">Descendente</option>
+      </select>
     </form>
   );
 }
