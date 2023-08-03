@@ -17,7 +17,7 @@ export function FilterOptions() {
         for="pages"
         class="uppercase font-bold tracking-wide text-xs text-blue-800 mb-1"
       >
-        páginas
+        Max. páginas
       </label>
       <div class="flex gap-2 items-center mb-2">
         <input

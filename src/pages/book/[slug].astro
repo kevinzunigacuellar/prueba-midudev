@@ -24,6 +24,9 @@ const { book } = Astro.props as Props;
 ---
 
 <Layout title={book.title}>
+  <a href="/" class="inline-block text-zinc-600 mb-4 hover:text-zinc-800">
+    &larr; Atras</a
+  >
   <section class="sm:flex sm:gap-12 pb-6">
     <img src={book.cover} class="rounded-lg w-full sm:w-auto" />
     <div class="max-w-prose text-zinc-600">
