@@ -17,7 +17,6 @@ export function getStaticPaths() {
   });
 }
 
-// type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { book } = Astro.props as Props;
