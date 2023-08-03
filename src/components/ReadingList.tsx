@@ -1,4 +1,8 @@
-import { store, removeFromReadingList } from "../scripts/store";
+import {
+  store,
+  removeFromReadingList,
+  moveItemInReadingList,
+} from "../scripts/store";
 import { For } from "solid-js";
 
 export function ReadingList() {
@@ -8,7 +12,7 @@ export function ReadingList() {
         each={store.readingList}
         fallback={<li class="text-zinc-400 py-1">No hay libros 😭</li>}
       >
-        {(book) => (
+        {(book, i) => (
           <li>
             <img
               src={book.cover}
@@ -16,6 +20,19 @@ export function ReadingList() {
               class="w-full aspect-[2/3] rounded-md"
               loading="lazy"
               decoding="async"
+              draggable
+              onDragStart={(e) => {
+                const fromIndex = i().toFixed();
+                e.dataTransfer?.setData("text/plain", fromIndex);
+              }}
+              onDragOver={(e) => {
+                e.preventDefault();
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                const fromIndex = Number(e.dataTransfer?.getData("text/plain"));
+                moveItemInReadingList(fromIndex, i());
+              }}
             />
             <div class="pt-3 flex gap-2 justify-between items-center">
               <p class="text-sm">

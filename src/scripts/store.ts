@@ -125,3 +125,13 @@ export function filterBySearch(search: string) {
 export function sortByYear(order: "asc" | "desc") {
   setStore("filters", "sortByYear", order);
 }
+
+export function moveItemInReadingList(from: number, to: number) {
+  setStore(
+    "readingList",
+    produce((readingList) => {
+      const [removed] = readingList.splice(from, 1);
+      readingList.splice(to, 0, removed!);
+    }),
+  );
+}
