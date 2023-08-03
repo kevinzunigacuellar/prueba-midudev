@@ -12,20 +12,19 @@ export function BookShowcase() {
           <For each={store.showcaseBooks}>
             {(book) => (
               <li>
-                <a href={`/book/${book.ISBN}/`}>
-                  <img
-                    src={book.cover}
-                    alt={book.title}
-                    class="w-full aspect-[2/3] rounded-md"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
+                <img
+                  src={book.cover}
+                  alt={book.title}
+                  class="w-full aspect-[2/3] rounded-md"
+                  loading="lazy"
+                  decoding="async"
+                />
+
                 <div class="pt-3 flex gap-2 justify-between items-center">
                   <p class="text-sm">
                     <a
                       href={`/book/${book.ISBN}/`}
-                      class="inline-block text-zinc-900 font-semibold underline hover:text-blue-600"
+                      class="inline-block text-blue-600 font-semibold underline underline-offset-2 hover:text-purple-600"
                     >
                       {book.title}
                     </a>
